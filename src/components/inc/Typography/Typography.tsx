@@ -4,9 +4,7 @@ import { TypographyProps as TypographyPropsMUI } from '@mui/material'
 // styles
 import { StyledTypography } from './typography-styles'
 
-export interface TypographyProps extends TypographyPropsMUI {
-    [extraProps: string]: any
-}
+export type TypographyProps = TypographyPropsMUI
 
 const Typography: FC<TypographyProps> = ({ children, ...rest }): ReactElement => (
     <StyledTypography {...rest}>{children}</StyledTypography>

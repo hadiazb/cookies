@@ -4,9 +4,7 @@ import { PopoverProps as PopoverPropsMUI } from '@mui/material'
 // styles
 import { StyledPopover } from './popover-styles'
 
-export interface PopoverProps extends PopoverPropsMUI {
-    [extraPros: string]: any
-}
+export type PopoverProps = PopoverPropsMUI
 
 const Popover: FC<PopoverProps> = ({ children, ...rest }): ReactElement => {
     return <StyledPopover {...rest}>{children}</StyledPopover>

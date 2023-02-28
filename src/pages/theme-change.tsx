@@ -1,20 +1,20 @@
 import { ReactElement } from 'react'
 
 import { MainLayout, MainStateLayout, ViewLayout } from '@/components'
-import { HomeView } from '@/views'
+import { ThemeChange } from '@/views'
 
-const HomePage = (): ReactElement => {
-    return <HomeView />
+const ThemeChangePage = (): ReactElement => {
+    return <ThemeChange />
 }
 
-export default HomePage
+export default ThemeChangePage
 
 const getLayout = (page: ReactElement): ReactElement => (
     <MainStateLayout>
-        <MainLayout title="Style Guy" description="Style Guy description">
+        <MainLayout title="ThemeChangePage" description="ThemeChangePage description">
             <ViewLayout>{page}</ViewLayout>
         </MainLayout>
     </MainStateLayout>
 )
 
-HomePage.getLayout = getLayout
+ThemeChangePage.getLayout = getLayout

@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components/macro'
 import { ThemeProvider as ThemeProviderMUI } from '@mui/material/styles'
 
 // base components
-import { DefaultCtr } from '../..'
+import { DefaultCtr, Navbar } from '../..'
 
 // styles
 import { StyledMainLayout } from './mainLayout-styles'
@@ -29,7 +29,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description })
             <ThemeProvider theme={theme}>
                 <ThemeProviderMUI theme={themeMUI}>
                     <GlobalStyle reset />
-
+                    <Navbar />
                     <StyledMainLayout>
                         <DefaultCtr>{children}</DefaultCtr>
                     </StyledMainLayout>

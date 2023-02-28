@@ -3,18 +3,18 @@ import { ReactElement } from 'react'
 import { MainLayout, MainStateLayout, ViewLayout } from '@/components'
 import { HomeView } from '@/views'
 
-const HomePage = (): ReactElement => {
+const AboutPage = (): ReactElement => {
     return <HomeView />
 }
 
-export default HomePage
+export default AboutPage
 
 const getLayout = (page: ReactElement): ReactElement => (
     <MainStateLayout>
-        <MainLayout title="Style Guy" description="Style Guy description">
+        <MainLayout title="AboutPage" description="AboutPage description">
             <ViewLayout>{page}</ViewLayout>
         </MainLayout>
     </MainStateLayout>
 )
 
-HomePage.getLayout = getLayout
+AboutPage.getLayout = getLayout
