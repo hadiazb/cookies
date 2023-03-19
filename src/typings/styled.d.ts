@@ -17,15 +17,51 @@ declare module 'styled-components' {
     export type ThemeWithFunc = OverwriteWithTheme<DefaultTheme>
     export interface DefaultTheme {
         colors: {
-            primary: string
-            secondary: string
-            success: string
-            error: string
-            warning: string
-            info: string
-            light: string
-            dark: string
-            white: string
+            primary: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
+            secondary: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
+            success: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
+            error: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
+            warning: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
+            info: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
+            light: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
+            dark: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
+            white: {
+                DEFAULT: string
+                light: string
+                dark: string
+            }
         }
 
         font: {

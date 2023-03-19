@@ -13,9 +13,10 @@ export type MainLayoutProps = {
     children: React.ReactNode
     title: string
     description: string
+    imageFullUrl?: string
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, imageFullUrl }) => {
     const theme = Theme()
 
     return (
@@ -23,6 +24,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description })
             <Head>
                 <title>{title}</title>
                 <meta name="description" content={description} />
+                <meta name="og:title" content={title} />
+                <meta name="og:description" content={description} />
+                {imageFullUrl && <meta name="og:image" content={imageFullUrl} />}
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>

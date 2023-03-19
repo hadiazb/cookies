@@ -1,11 +1,9 @@
 import tw, { styled } from 'twin.macro'
 
 export const StyledNavbar = styled.section`
-    ${tw`px-1 mx-2 max-w-6xl w-full`}
-    ${tw`sm:px-2 sm:mx-auto`}
-    ${tw`sm:px-3`}
-    ${tw`md:px-5`}
-
+    ${tw`px-1 mx-auto max-w-6xl w-[calc(100% - 0.5rem)]`}
+    ${tw`sm:px-2 sm:w-[calc(100% - 1rem)]`}
+    ${tw`md:px-5 md:w-[calc(100% - 2.5rem)]`}
 
     & .MuiToolbar-root {
         ${tw`px-0`}
@@ -13,5 +11,9 @@ export const StyledNavbar = styled.section`
 
     & .navbar-link {
         ${tw`mr-5 [text-decoration: none]`}
+    }
+
+    & .link {
+        ${tw`[text-decoration: none]`}
     }
 `

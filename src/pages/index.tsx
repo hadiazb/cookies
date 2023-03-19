@@ -11,7 +11,10 @@ export default HomePage
 
 const getLayout = (page: ReactElement): ReactElement => (
     <MainStateLayout>
-        <MainLayout title="Style Guy" description="Style Guy description">
+        <MainLayout
+            title="Teslo - Shop - Home"
+            description="Encuentra los mejores productos de Teslo aquí"
+        >
             <ViewLayout>{page}</ViewLayout>
         </MainLayout>
     </MainStateLayout>

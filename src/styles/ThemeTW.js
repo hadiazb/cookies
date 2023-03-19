@@ -1,14 +1,50 @@
 module.exports.theme = {
     colors: {
-        primary: '#FACD34',
-        secondary: '#512F8B',
-        success: '#218838',
-        danger: '#C82333',
-        warning: '#E0A800',
-        info: '#138496',
-        light: '#F9F9F9',
-        dark: '#112222',
-        white: '#FFFFFF',
+        primary: {
+            DEFAULT: '#5B4B8A',
+            light: '#7858A6',
+            dark: '#371B58',
+        },
+        secondary: {
+            DEFAULT: '#FDA65D',
+            light: '#FFD07F',
+            dark: '#E26A2C',
+        },
+        success: {
+            DEFAULT: '#2e7d32',
+            light: '#4caf50',
+            dark: '#1b5e20',
+        },
+        error: {
+            DEFAULT: '#d32f2f',
+            light: '#ef5350',
+            dark: '#c62828',
+        },
+        warning: {
+            DEFAULT: '#ed6c02',
+            light: '#ff9800',
+            dark: '#e65100',
+        },
+        info: {
+            DEFAULT: '#0288d1',
+            light: '#03a9f4',
+            dark: '#01579b',
+        },
+        light: {
+            DEFAULT: '#F9F9F9',
+            light: '#F9F9F9',
+            dark: '#F9F9F9',
+        },
+        dark: {
+            DEFAULT: '#112222',
+            light: '#112222',
+            dark: '#112222',
+        },
+        white: {
+            DEFAULT: '#FFFFFF',
+            light: '#FFFFFF',
+            dark: '#FFFFFF',
+        },
     },
 
     font: {
