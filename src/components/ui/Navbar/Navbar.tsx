@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import NextLink from 'next/link'
+import Link from 'next/link'
 
 import { SearchOutlined, ShoppingCart } from '@mui/icons-material'
 
@@ -22,43 +22,43 @@ const Navbar = (): ReactElement => {
         <AppBar>
             <StyledNavbar>
                 <Toolbar>
-                    <NextLink href="/" passHref className="navbar-link">
+                    <Link href="/" className="navbar-link">
                         <Typography variant="h5" color="secondary">
                             Teslo |
                         </Typography>
                         <Typography sx={{ ml: 0.5 }} variant="h6" color="secondary">
                             Shop
                         </Typography>
-                    </NextLink>
+                    </Link>
                     <Box flex={1} />
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        <NextLink href="/category/men" passHref className="link">
+                        <Link href="/category/men" className="link">
                             <DefaultButton sx={{ mx: 0.5 }} variant="text" color="secondary">
                                 Hombres
                             </DefaultButton>
-                        </NextLink>
-                        <NextLink href="/category/women" passHref className="link">
+                        </Link>
+                        <Link href="/category/women" className="link">
                             <DefaultButton sx={{ mx: 0.5 }} variant="text" color="secondary">
                                 Mujeres
                             </DefaultButton>
-                        </NextLink>
-                        <NextLink href="/category/children" passHref className="link">
+                        </Link>
+                        <Link href="/category/boys" as="/category" className="link">
                             <DefaultButton sx={{ mx: 0.5 }} variant="text" color="secondary">
                                 Niños
                             </DefaultButton>
-                        </NextLink>
+                        </Link>
                     </Box>
                     <Box flex={1} />
                     <IconButton>
                         <SearchOutlined color="secondary" />
                     </IconButton>
-                    <NextLink href="/cart" passHref>
+                    <Link href="/cart">
                         <IconButton>
                             <Badge badgeContent={2} color="error">
                                 <ShoppingCart color="secondary" />
                             </Badge>
                         </IconButton>
-                    </NextLink>
+                    </Link>
                     <DefaultButton sx={{ mx: 0.5 }} variant="text" color="secondary">
                         Menu
                     </DefaultButton>
