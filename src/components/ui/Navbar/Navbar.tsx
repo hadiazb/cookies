@@ -1,4 +1,5 @@
 import { ReactElement } from 'react'
+import { useDispatch } from 'react-redux'
 import Link from 'next/link'
 
 import { SearchOutlined, ShoppingCart } from '@mui/icons-material'
@@ -17,7 +18,17 @@ import {
 // styles
 import { StyledNavbar } from './navbar-styles'
 
+// store
+import { AppDispatch } from '../../../store/store'
+import * as actions from '../../../store/ui'
+
 const Navbar = (): ReactElement => {
+    const dispatch: AppDispatch = useDispatch()
+
+    const onShowOrHideSidebar = (): void => {
+        dispatch(actions.onShowOrHideSidebar())
+    }
+
     return (
         <AppBar>
             <StyledNavbar>
@@ -59,7 +70,12 @@ const Navbar = (): ReactElement => {
                             </Badge>
                         </IconButton>
                     </Link>
-                    <DefaultButton sx={{ mx: 0.5 }} variant="text" color="secondary">
+                    <DefaultButton
+                        sx={{ mx: 0.5 }}
+                        variant="text"
+                        color="secondary"
+                        onClick={onShowOrHideSidebar}
+                    >
                         Menu
                     </DefaultButton>
                 </Toolbar>

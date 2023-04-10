@@ -1,4 +1,5 @@
-import { ReactElement } from 'react'
+import { FC, ReactElement } from 'react'
+import { useDispatch } from 'react-redux'
 
 // components
 import {
@@ -29,10 +30,25 @@ import {
     VpnKeyOutlined,
 } from '@mui/icons-material'
 
-export const Sidebar = (): ReactElement => {
+// store
+import { AppDispatch } from '../../../store/store'
+import * as actions from '../../../store/ui'
+
+export interface SidebarProps {
+    showSidebar: boolean
+}
+
+const Sidebar: FC<SidebarProps> = ({ showSidebar }): ReactElement => {
+    const dispatch: AppDispatch = useDispatch()
+
+    const onShowOrHideSidebar = (): void => {
+        dispatch(actions.onShowOrHideSidebar())
+    }
+
     return (
         <Drawer
-            open={true}
+            open={showSidebar}
+            onClose={onShowOrHideSidebar}
             anchor="right"
             sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
         >

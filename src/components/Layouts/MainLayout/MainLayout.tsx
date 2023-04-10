@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useSelector } from 'react-redux'
 import { ThemeProvider } from 'styled-components/macro'
 import { ThemeProvider as ThemeProviderMUI } from '@mui/material/styles'
 
@@ -9,6 +10,9 @@ import { DefaultCtr, Navbar, Sidebar } from '../..'
 import { StyledMainLayout } from './mainLayout-styles'
 import { Theme, themeMUI, GlobalStyle } from '../../../styles'
 
+// store
+import { RootState } from '@/store/store'
+
 export type MainLayoutProps = {
     children: React.ReactNode
     title: string
@@ -18,6 +22,7 @@ export type MainLayoutProps = {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, imageFullUrl }) => {
     const theme = Theme()
+    const { showSidebar } = useSelector((store: RootState) => store.ui)
 
     return (
         <>
@@ -34,7 +39,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, i
                 <ThemeProviderMUI theme={themeMUI}>
                     <GlobalStyle reset />
                     <Navbar />
-                    <Sidebar />
+                    <Sidebar showSidebar={showSidebar} />
                     <StyledMainLayout>
                         <DefaultCtr>{children}</DefaultCtr>
                     </StyledMainLayout>
