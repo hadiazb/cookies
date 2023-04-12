@@ -1,5 +1,5 @@
 import tw, { styled } from 'twin.macro'
 
-export const StyledContactView = styled.section`
+export const StyledProductCard = styled.footer`
     ${tw``}
 `
