@@ -6,25 +6,8 @@ import { StyledInput } from './defaultInput-styles'
 
 export type DefaultInputProps = TextFieldProps
 
-const DefaultInput: FC<DefaultInputProps> = ({
-    label,
-    defaultValue,
-    error,
-    helperText,
-
-    ...rest
-}): ReactElement => {
-    return (
-        <StyledInput
-            label={label}
-            helperText={helperText}
-            defaultValue={defaultValue}
-            error={error}
-            {...rest}
-        >
-            DefaultInput
-        </StyledInput>
-    )
+const DefaultInput: FC<DefaultInputProps> = ({ ...rest }): ReactElement => {
+    return <StyledInput {...rest} />
 }
 
 export default DefaultInput

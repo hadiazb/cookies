@@ -1,5 +1,5 @@
 import tw, { styled } from 'twin.macro'
 
-export const StyledCardView = styled.section`
+export const StyledOrderSummary = styled.div`
     ${tw``}
 `
