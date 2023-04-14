@@ -43,7 +43,12 @@ const CartView = (): ReactElement => {
                             <OrderSummary />
 
                             <Box sx={{ mt: 3 }}>
-                                <DefaultButton color="secondary" fullWidth variant="outlined">
+                                <DefaultButton
+                                    color="secondary"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ color: 'white', fontWeight: 700 }}
+                                >
                                     Checkout
                                 </DefaultButton>
                             </Box>

@@ -1,20 +1,20 @@
 import { ReactElement } from 'react'
 
 import { MainLayout, MainStateLayout, ViewLayout } from '@/components'
-import { AuthView } from '@/views'
+import { HistoryOrdersView } from '@/views'
 
-const AuthPage = (): ReactElement => {
-    return <AuthView />
+const HistoryPage = (): ReactElement => {
+    return <HistoryOrdersView />
 }
 
-export default AuthPage
+export default HistoryPage
 
 const getLayout = (page: ReactElement): ReactElement => (
     <MainStateLayout>
-        <MainLayout title="AuthPage" description="AuthPage description">
+        <MainLayout title="HistoryPage" description="HistoryPage description">
             <ViewLayout>{page}</ViewLayout>
         </MainLayout>
     </MainStateLayout>
 )
 
-AuthPage.getLayout = getLayout
+HistoryPage.getLayout = getLayout

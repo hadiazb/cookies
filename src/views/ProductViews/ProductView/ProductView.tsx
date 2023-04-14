@@ -43,7 +43,11 @@ const ProductView: FC<ProductViewProps> = ({ product }): ReactElement => {
                             <SizeSelector selectedSize={product.sizes[0]} sizes={product.sizes} />
                         </Box>
 
-                        <DefaultButton color="secondary" sx={{ my: 2 }} variant="outlined">
+                        <DefaultButton
+                            color="secondary"
+                            sx={{ my: 2, color: 'white', fontWeight: 700 }}
+                            variant="contained"
+                        >
                             Agregar al carrito
                         </DefaultButton>
 

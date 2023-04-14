@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { ThemeProvider } from 'styled-components/macro'
 import { ThemeProvider as ThemeProviderMUI } from '@mui/material/styles'
@@ -24,6 +25,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, i
     const theme = Theme()
     const { showSidebar } = useSelector((store: RootState) => store.ui)
 
+    const { route } = useRouter()
+
     return (
         <>
             <Head>
@@ -38,8 +41,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, i
             <ThemeProvider theme={theme}>
                 <ThemeProviderMUI theme={themeMUI}>
                     <GlobalStyle reset />
-                    <Navbar />
-                    <Sidebar showSidebar={showSidebar} />
+                    {!['/auth/login', '/auth/register'].includes(route) && (
+                        <>
+                            <Navbar />
+                            <Sidebar showSidebar={showSidebar} />
+                        </>
+                    )}
                     <StyledMainLayout>
                         <DefaultCtr>{children}</DefaultCtr>
                     </StyledMainLayout>
