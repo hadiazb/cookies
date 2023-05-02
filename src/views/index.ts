@@ -1,4 +1,5 @@
 export { default as HomeView } from './HomeView'
+export { default as SearchView } from './SearchView'
 export { default as Custom404View } from './Custom404View'
 
 export * from './AuthViews'

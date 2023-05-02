@@ -1,24 +1,40 @@
-import { ReactElement } from 'react'
+import { FC, ReactElement } from 'react'
 
 // components
-import { Typography, Box, ProductList } from '@/components'
+import { Typography, Box, ProductList, FullScreenLoading } from '@/components'
 
-// Data Base
-import { initialData } from '@/db/products'
+// api
+import { getProducts } from '@/apis'
+
+// hooks
+import { useProducts } from '@/hooks'
 
 // models
-import { IProduct } from '@/interfaces'
+import { IProduct } from 'models'
 
-const HomeView = (): ReactElement => {
+export interface HomeViewProps {
+    title: string
+    subtitle: string
+    category?: string
+}
+
+const HomeView: FC<HomeViewProps> = ({ title, subtitle, category = '' }): ReactElement => {
+    const { products, error, isLoading } = useProducts<IProduct[]>(
+        `/products?gender=${category}`,
+        getProducts
+    )
+
     return (
         <>
-            <Typography variant="h1">Tienda</Typography>
+            <Typography variant="h1">{title}</Typography>
             <Typography variant="h2" sx={{ mb: 1 }}>
-                Todos los productos
+                {subtitle}
             </Typography>
             <Box height={50} />
 
-            <ProductList products={initialData.products as IProduct[]} />
+            {isLoading && <FullScreenLoading />}
+            {error && <p>Error</p>}
+            {!isLoading && <ProductList products={products ?? []} />}
         </>
     )
 }

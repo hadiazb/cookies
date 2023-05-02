@@ -13,10 +13,15 @@ export interface ProductCardProps {
 
 const ProductCard: FC<ProductCardProps> = ({ product }): ReactElement => {
     const [isHovered, setIsHovered] = useState(false)
+    const [isImageLoad, setIsImageLoad] = useState(false)
 
     const productImage = useMemo(() => {
-        return isHovered ? `products/${product.images[1]}` : `products/${product.images[0]}`
+        return isHovered ? `/products/${product.images[1]}` : `/products/${product.images[0]}`
     }, [isHovered, product.images])
+
+    const imageLoaded = useMemo(() => {
+        return isImageLoad ? 'block' : 'none'
+    }, [isImageLoad])
 
     return (
         <Grid
@@ -32,15 +37,20 @@ const ProductCard: FC<ProductCardProps> = ({ product }): ReactElement => {
                 setIsHovered(false)
             }}
         >
-            <Link href={'/product/slug'} passHref prefetch={false}>
+            <Link href={`/product/${product.slug}`} passHref prefetch={false}>
                 <Card>
                     <CardActionArea>
-                        <CardMedia image={productImage} component="img" alt={product.title} />
+                        <CardMedia
+                            image={productImage}
+                            component="img"
+                            alt={product.title}
+                            onLoad={() => setIsImageLoad(true)}
+                        />
                     </CardActionArea>
                 </Card>
             </Link>
 
-            <Box sx={{ mt: 1 }}>
+            <Box sx={{ mt: 1, display: imageLoaded }}>
                 <Typography fontWeight={700}>{product.title}</Typography>
                 <Typography fontWeight={500}>$ {product.price}</Typography>
             </Box>

@@ -6,7 +6,7 @@ type Data =
     | {
           message: string
       }
-    | IProduct[]
+    | IProduct
     | typeof Product
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>): void {
@@ -41,11 +41,11 @@ const notFountRequest = (res: NextApiResponse<Data>): void => {
 const getProductBySlug = async (req: NextApiRequest, res: NextApiResponse<Data>): Promise<void> => {
     const { slug } = req.query
     await db.connect()
-    const product = await Product.find({ slug })
-        .select('title images price inStock slug -_id')
+    const product = await Product.findOne({ slug })
+        .select('title images price inStock slug description sizes -_id')
         .lean()
 
-    if (product.length === 0) {
+    if (!product) {
         await db.disconnect()
         return res.status(400).json({ message: 'No existe' })
     }

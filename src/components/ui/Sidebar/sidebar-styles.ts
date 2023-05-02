@@ -1,5 +1,7 @@
 import tw, { styled } from 'twin.macro'
 
 export const StyledSidebar = styled.section`
-    ${tw``}
+    & .link {
+        ${tw`[text-decoration: none] text-black`}
+    }
 `

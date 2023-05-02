@@ -4,7 +4,7 @@ import { MainLayout, MainStateLayout, ViewLayout } from '@/components'
 import { HomeView } from '@/views'
 
 const HomePage = (): ReactElement => {
-    return <HomeView />
+    return <HomeView title="Tienda" subtitle="Todos los productos" path="products" />
 }
 
 export default HomePage
