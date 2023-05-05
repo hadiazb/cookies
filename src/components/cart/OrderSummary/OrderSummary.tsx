@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { FC, ReactElement } from 'react'
 
 // styles
 import { StyledOrderSummary } from './orderSummary-styles'
@@ -6,7 +6,25 @@ import { StyledOrderSummary } from './orderSummary-styles'
 // components
 import { Grid, Typography } from '@/components'
 
-const OrderSummary = (): ReactElement => {
+// interfaces
+import { ICartProduct } from '@/interfaces'
+
+// utils
+import { format } from '@/utils'
+
+export interface OrderSummaryProps {
+    products: ICartProduct[]
+    interestRate: number
+}
+
+const OrderSummary: FC<OrderSummaryProps> = ({ products, interestRate }): ReactElement => {
+    const totalPrice = (products: ICartProduct[]): number =>
+        products.reduce((acc, current) => acc + current.quantity * current.price, 0)
+
+    const applyInterestRate = (): number => {
+        return (totalPrice(products) * interestRate) / 100
+    }
+
     return (
         <StyledOrderSummary>
             <Grid container>
@@ -14,28 +32,30 @@ const OrderSummary = (): ReactElement => {
                     <Typography fontWeight={500}>No. Productos</Typography>
                 </Grid>
                 <Grid item xs={6} display="flex" justifyContent="end">
-                    <Typography>3 items</Typography>
+                    <Typography>{products.length} items</Typography>
                 </Grid>
 
                 <Grid item xs={6}>
                     <Typography fontWeight={500}>SubTotal</Typography>
                 </Grid>
                 <Grid item xs={6} display="flex" justifyContent="end">
-                    <Typography>{`$ ${155.36}`}</Typography>
+                    <Typography>{`${format(totalPrice(products))}`}</Typography>
                 </Grid>
 
                 <Grid item xs={6}>
-                    <Typography fontWeight={500}>Impuestos (15%)</Typography>
+                    <Typography fontWeight={500}>Impuestos {`(${interestRate}%)`}</Typography>
                 </Grid>
                 <Grid item xs={6} display="flex" justifyContent="end">
-                    <Typography>{`$ ${35.12}`}</Typography>
+                    <Typography>{`${format(applyInterestRate())}`}</Typography>
                 </Grid>
 
                 <Grid item xs={6} sx={{ mt: 2 }}>
                     <Typography variant="subtitle1">Total:</Typography>
                 </Grid>
                 <Grid item xs={6} sx={{ mt: 2 }} display="flex" justifyContent="end">
-                    <Typography variant="subtitle1">{`$ ${35.12}`}</Typography>
+                    <Typography variant="subtitle1">{`${format(
+                        totalPrice(products) + applyInterestRate()
+                    )}`}</Typography>
                 </Grid>
             </Grid>
         </StyledOrderSummary>

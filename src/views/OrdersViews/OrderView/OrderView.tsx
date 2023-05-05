@@ -18,15 +18,12 @@ import {
     Chip,
 } from '@/components'
 
-// database
-import { initialData } from '@/db/products'
-
-// models
-import { IProduct } from '@/interfaces'
-
-const productsInCart = [initialData.products[0], initialData.products[1], initialData.products[2]]
+// selectors
+import { productsSelector, useSelector } from '@/selectors'
 
 const OrderView = (): ReactElement => {
+    const { products, interestRate } = useSelector(productsSelector)
+
     return (
         <StyledOrderView>
             <Typography variant="h1" sx={{ mb: 2 }}>
@@ -51,7 +48,7 @@ const OrderView = (): ReactElement => {
 
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={7}>
-                    <CartList products={productsInCart as IProduct[]} />
+                    <CartList products={products} />
                 </Grid>
                 <Grid item xs={12} sm={5}>
                     <Card>
@@ -79,7 +76,7 @@ const OrderView = (): ReactElement => {
                                 </Link>
                             </Box>
 
-                            <OrderSummary />
+                            <OrderSummary products={products} interestRate={interestRate} />
 
                             <Box sx={{ mt: 3 }}>
                                 <Typography variant="h1">Pagar</Typography>

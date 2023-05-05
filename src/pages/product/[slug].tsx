@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { GetStaticPaths, GetStaticProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 
 // components
 import { MainLayout, MainStateLayout, ViewLayout } from '@/components'
@@ -13,7 +13,7 @@ import { IProduct } from '@/interfaces'
 // database
 import { dbProducts } from 'database'
 
-export type ProductPageProps = InferGetServerSidePropsType<typeof getStaticProps>
+export type ProductPageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const ProductPage = (props: ProductPageProps): ReactElement => {
     return <ProductView product={props.product} />

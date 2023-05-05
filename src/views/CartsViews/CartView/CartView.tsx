@@ -1,4 +1,5 @@
 import { ReactElement } from 'react'
+import { useDispatch } from 'react-redux'
 
 // styles
 import { StyledCardView } from './cartView-styles'
@@ -16,15 +17,27 @@ import {
     OrderSummary,
 } from '@/components'
 
-// database
-import { initialData } from '@/db/products'
+// selectors
+import { productsSelector, useSelector } from '@/selectors'
 
-// models
-import { IProduct } from '@/interfaces'
+// interfaces
+import { ICartProduct } from '@/interfaces'
 
-const productsInCart = [initialData.products[0], initialData.products[1], initialData.products[2]]
+// store
+import { AppDispatch } from '@/store/store'
+
+// action
+import * as actions from '@/store/cart'
 
 const CartView = (): ReactElement => {
+    const dispatch: AppDispatch = useDispatch()
+
+    const { products, interestRate } = useSelector(productsSelector)
+
+    const onRemove = (product: ICartProduct): void => {
+        dispatch(actions.removeToCart(product))
+    }
+
     return (
         <StyledCardView>
             <Typography variant="h1" sx={{ mb: 2 }}>
@@ -32,7 +45,7 @@ const CartView = (): ReactElement => {
             </Typography>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={7}>
-                    <CartList editable products={productsInCart as IProduct[]} />
+                    <CartList editable products={products} onRemove={onRemove} />
                 </Grid>
                 <Grid item xs={12} sm={5}>
                     <Card>
@@ -40,7 +53,7 @@ const CartView = (): ReactElement => {
                             <Typography variant="h2">Orden</Typography>
                             <Divider sx={{ my: 1 }} />
 
-                            <OrderSummary />
+                            <OrderSummary products={products} interestRate={interestRate} />
 
                             <Box sx={{ mt: 3 }}>
                                 <DefaultButton

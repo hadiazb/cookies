@@ -20,7 +20,8 @@ export const storage =
     typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage()
 
 export const persistConfig = {
-    key: 'root',
+    key: 'store',
+    keyPrefix: 'teslo-',
     storage,
     blacklist: ['ui'],
 }

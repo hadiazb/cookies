@@ -7,11 +7,16 @@ import { Box, DefaultButton } from '@/components'
 import { ISize } from '@/interfaces'
 
 export interface SizeSelectorProps {
-    selectedSize?: ISize
     sizes: ISize[]
+    onSelectedSize?: (size: ISize) => void
+    selectedSize?: ISize
 }
 
-const SizeSelector: FC<SizeSelectorProps> = ({ selectedSize, sizes }): ReactElement => {
+const SizeSelector: FC<SizeSelectorProps> = ({
+    selectedSize,
+    sizes,
+    onSelectedSize,
+}): ReactElement => {
     return (
         <Box sx={{ my: 2 }}>
             {sizes.map((size) => (
@@ -21,6 +26,11 @@ const SizeSelector: FC<SizeSelectorProps> = ({ selectedSize, sizes }): ReactElem
                     size="small"
                     variant={selectedSize === size ? 'contained' : 'outlined'}
                     color={selectedSize === size ? 'primary' : 'secondary'}
+                    onClick={() => {
+                        if (onSelectedSize) {
+                            onSelectedSize(size)
+                        }
+                    }}
                 >
                     {size}
                 </DefaultButton>

@@ -1,4 +1,6 @@
-import { FC, ReactElement } from 'react'
+import { FC, ReactElement, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
 
 // components
 import {
@@ -14,16 +16,50 @@ import {
 } from '@/components'
 
 // models
-import { IProduct } from '@/interfaces'
+import { ICartProduct, IProduct, ISize } from '@/interfaces'
 
 // styles
 import { StyledProductView } from './productView-styles'
 
+// store
+import { AppDispatch } from '@/store/store'
+import * as actions from '../../../store/cart'
+
 export interface ProductViewProps {
-    product: IProduct | null
+    product: IProduct
 }
 
 const ProductView: FC<ProductViewProps> = ({ product }): ReactElement => {
+    const dispatch: AppDispatch = useDispatch()
+    const router = useRouter()
+
+    const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+        _id: product._id,
+        price: product.price,
+        slug: product.slug,
+        title: product.title,
+        gender: product.gender,
+        images: product.images[0],
+        size: undefined,
+        quantity: 1,
+    })
+
+    const selectedSize = (size: ISize): void => {
+        setTempCartProduct((prevState) => ({ ...prevState, size }))
+    }
+
+    const onUpdateQuantity = (newQuantity: number): void => {
+        setTempCartProduct((prevState) => ({
+            ...prevState,
+            quantity: newQuantity,
+        }))
+    }
+
+    const onAddToCart = (): void => {
+        dispatch(actions.addToCart(tempCartProduct))
+        router.push('/cart')
+    }
+
     return (
         <StyledProductView>
             {product && (
@@ -40,22 +76,33 @@ const ProductView: FC<ProductViewProps> = ({ product }): ReactElement => {
 
                             <Box sx={{ my: 2 }}>
                                 <Typography variant="subtitle2">Cantidad</Typography>
-                                <ItemCounter count={4} />
+                                <ItemCounter
+                                    quantity={tempCartProduct.quantity}
+                                    maxValue={product.inStock > 10 ? 10 : product.inStock}
+                                    updateQuantity={onUpdateQuantity}
+                                />
                                 <SizeSelector
-                                    selectedSize={product.sizes[0]}
+                                    selectedSize={tempCartProduct.size}
                                     sizes={product.sizes}
+                                    onSelectedSize={selectedSize}
                                 />
                             </Box>
 
-                            <DefaultButton
-                                color="secondary"
-                                sx={{ my: 2, color: 'white', fontWeight: 700 }}
-                                variant="contained"
-                            >
-                                Agregar al carrito
-                            </DefaultButton>
-
-                            <Chip label="No hay disponibles" color="error" variant="outlined" />
+                            {product.inStock > 0 ? (
+                                <DefaultButton
+                                    color="secondary"
+                                    sx={{ my: 2, color: 'white', fontWeight: 700 }}
+                                    variant="contained"
+                                    disabled={tempCartProduct.size === undefined}
+                                    onClick={onAddToCart}
+                                >
+                                    {tempCartProduct.size
+                                        ? 'Agregar al carrito'
+                                        : 'Seleccione una talla'}
+                                </DefaultButton>
+                            ) : (
+                                <Chip label="No hay disponibles" color="error" variant="outlined" />
+                            )}
 
                             <Box sx={{ mt: 3 }}>
                                 <Divider />

@@ -2,7 +2,7 @@ import { FC, ReactElement, useMemo, useState } from 'react'
 import Link from 'next/link'
 
 // components
-import { Card, CardActionArea, CardMedia, Grid, Box, Typography } from '@/components'
+import { Card, CardActionArea, CardMedia, Grid, Box, Typography, Chip } from '@/components'
 
 // models
 import { IProduct } from '@/interfaces'
@@ -40,6 +40,13 @@ const ProductCard: FC<ProductCardProps> = ({ product }): ReactElement => {
             <Link href={`/product/${product.slug}`} passHref prefetch={false}>
                 <Card>
                     <CardActionArea>
+                        {product.inStock === 0 && (
+                            <Chip
+                                color="primary"
+                                label="No disponible"
+                                sx={{ position: 'absolute', zIndex: 99, top: '0px', left: '0px' }}
+                            />
+                        )}
                         <CardMedia
                             image={productImage}
                             component="img"

@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 
 // reducers
 import { rootReducers } from './rootReducers'
+// import { rootReducers2 } from './rootReducers2'
 
 // persist config
 import { persistConfig } from './persistConfig'
