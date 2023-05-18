@@ -1,7 +1,9 @@
 import tw, { styled } from 'twin.macro'
-import { TextField } from '@mui/material'
+import { TextField, TextFieldProps } from '@mui/material'
 
-export const StyledInput = styled(TextField)`
+export type DefaultInputProps = TextFieldProps
+
+export const StyledInput = styled(TextField)<DefaultInputProps>`
     & label {
         ${tw`!font-montserrat`}
     }

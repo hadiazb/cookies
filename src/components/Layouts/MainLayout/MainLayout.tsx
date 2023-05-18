@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
 import { ThemeProvider } from 'styled-components/macro'
 import { ThemeProvider as ThemeProviderMUI } from '@mui/material/styles'
 
@@ -11,7 +13,22 @@ import { StyledMainLayout } from './mainLayout-styles'
 import { Theme, themeMUI, GlobalStyle } from '../../../styles'
 
 // selectors
-import { uiSelector, useSelector } from '@/selectors'
+import { uiSelector, useSelector, authSelector } from '@/selectors'
+
+// apis
+import { interceptors } from '@/apis'
+
+// store
+import { AppDispatch } from '@/store/store'
+
+// actions
+import { onValidateToken } from '@/store/auth'
+
+// utils
+import { isAuthToken } from '@/utils'
+
+// hooks
+import { useAuthSession } from '@/hooks'
 
 export type MainLayoutProps = {
     children: React.ReactNode
@@ -21,10 +38,23 @@ export type MainLayoutProps = {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, imageFullUrl }) => {
+    const dispatch: AppDispatch = useDispatch()
+
     const theme = Theme()
     const { showSidebar } = useSelector(uiSelector)
+    const { token } = useSelector(authSelector)
 
     const { route } = useRouter()
+
+    useAuthSession()
+
+    useEffect(() => {
+        isAuthToken(token, () => {
+            dispatch(onValidateToken())
+        })
+    }, [])
+
+    interceptors(token)
 
     return (
         <>

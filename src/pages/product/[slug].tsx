@@ -47,7 +47,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
 }
 
-export const getStaticProps: GetStaticProps<{ product: IProduct | null }> = async (ctx) => {
+export const getStaticProps: GetStaticProps<{ product: IProduct }> = async (ctx) => {
     const { params } = ctx
     const { slug } = params as { slug: string }
 

@@ -2,6 +2,7 @@ import { FC, ReactElement, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
+import Cookies from 'js-cookie'
 
 // components
 import {
@@ -34,10 +35,15 @@ import {
 
 // store
 import { AppDispatch } from '../../../store/store'
-import * as actions from '../../../store/ui'
+import * as uiActions from '../../../store/ui'
+import * as authActions from '@/store/auth'
+import * as cartActions from '@/store/cart'
 
 // styles
 import { StyledSidebar } from './sidebar-styles'
+
+// selectors
+import { authSelector, useSelector } from '@/selectors'
 
 export interface SidebarProps {
     showSidebar: boolean
@@ -47,10 +53,19 @@ const Sidebar: FC<SidebarProps> = ({ showSidebar }): ReactElement => {
     const dispatch: AppDispatch = useDispatch()
     const router = useRouter()
 
+    const { user } = useSelector(authSelector)
+
     const [searchTerm, setSearchTerm] = useState('')
 
     const onShowOrHideSidebar = (): void => {
-        dispatch(actions.onShowOrHideSidebar())
+        dispatch(uiActions.onShowOrHideSidebar())
+    }
+
+    const onLogout = (): void => {
+        dispatch(authActions.onReset())
+        dispatch(cartActions.onCleanCart())
+        Cookies.remove('token')
+        onShowOrHideSidebar()
     }
 
     const onSearchTerm = (): void => {
@@ -92,19 +107,23 @@ const Sidebar: FC<SidebarProps> = ({ showSidebar }): ReactElement => {
                             />
                         </ListItem>
 
-                        <ListItem>
-                            <ListItemIcon>
-                                <AccountCircleOutlined />
-                            </ListItemIcon>
-                            <ListItemText primary={'Perfil'} />
-                        </ListItem>
+                        {user && (
+                            <>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <AccountCircleOutlined />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Perfil'} />
+                                </ListItem>
 
-                        <ListItem>
-                            <ListItemIcon>
-                                <ConfirmationNumberOutlined />
-                            </ListItemIcon>
-                            <ListItemText primary={'Mis Ordenes'} />
-                        </ListItem>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <ConfirmationNumberOutlined />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Mis Ordenes'} />
+                                </ListItem>
+                            </>
+                        )}
 
                         <ListItem
                             sx={{ display: { xs: '', sm: 'none' } }}
@@ -142,43 +161,56 @@ const Sidebar: FC<SidebarProps> = ({ showSidebar }): ReactElement => {
                             </Link>
                         </ListItem>
 
-                        <ListItem>
-                            <ListItemIcon>
-                                <VpnKeyOutlined />
-                            </ListItemIcon>
-                            <ListItemText primary={'Ingresar'} />
-                        </ListItem>
+                        <Divider sx={{ display: { xs: '', sm: 'none' } }} />
 
-                        <ListItem>
-                            <ListItemIcon>
-                                <LoginOutlined />
-                            </ListItemIcon>
-                            <ListItemText primary={'Salir'} />
-                        </ListItem>
+                        {user ? (
+                            <ListItem onClick={onLogout}>
+                                <ListItemIcon>
+                                    <LoginOutlined />
+                                </ListItemIcon>
+                                <ListItemText primary={'Salir'} />
+                            </ListItem>
+                        ) : (
+                            <ListItem
+                                onClick={() => {
+                                    router.push(`/auth/login?page=${router.asPath}`)
+                                    onShowOrHideSidebar()
+                                }}
+                            >
+                                <ListItemIcon>
+                                    <VpnKeyOutlined />
+                                </ListItemIcon>
+                                <ListItemText primary={'Ingresar'} />
+                            </ListItem>
+                        )}
 
                         {/* Admin */}
-                        <Divider />
-                        <ListSubheader>Admin Panel</ListSubheader>
+                        {user && user.role === 'admin' && (
+                            <>
+                                <Divider />
+                                <ListSubheader>Admin Panel</ListSubheader>
 
-                        <ListItem>
-                            <ListItemIcon>
-                                <CategoryOutlined />
-                            </ListItemIcon>
-                            <ListItemText primary={'Productos'} />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <ConfirmationNumberOutlined />
-                            </ListItemIcon>
-                            <ListItemText primary={'Ordenes'} />
-                        </ListItem>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <CategoryOutlined />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Productos'} />
+                                </ListItem>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <ConfirmationNumberOutlined />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Ordenes'} />
+                                </ListItem>
 
-                        <ListItem>
-                            <ListItemIcon>
-                                <AdminPanelSettings />
-                            </ListItemIcon>
-                            <ListItemText primary={'Usuarios'} />
-                        </ListItem>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <AdminPanelSettings />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Usuarios'} />
+                                </ListItem>
+                            </>
+                        )}
                     </List>
                 </Box>
             </StyledSidebar>

@@ -138,7 +138,8 @@ const Navbar = (): ReactElement => {
                     >
                         <SearchOutlined color="secondary" />
                     </IconButton>
-                    <Link href="/cart">
+
+                    <Link href={productsLength() > 0 ? '/cart' : '/cart/empty'}>
                         <IconButton>
                             <Badge
                                 badgeContent={productsLength() > 9 ? '+9' : productsLength()}
@@ -148,6 +149,7 @@ const Navbar = (): ReactElement => {
                             </Badge>
                         </IconButton>
                     </Link>
+
                     <DefaultButton
                         sx={{ mx: 0.5 }}
                         variant="text"

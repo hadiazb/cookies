@@ -1,6 +1,8 @@
 import tw, { styled } from 'twin.macro'
-import { Select } from '@mui/material'
+import { Select, SelectProps } from '@mui/material'
 
-export const StyledSelect = styled(Select)`
+export type DefaultSelectProps = SelectProps
+
+export const StyledSelect = styled(Select)<DefaultSelectProps>`
     ${tw``}
 `

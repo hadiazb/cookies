@@ -3,10 +3,12 @@ import { persistStore, persistReducer } from 'redux-persist'
 
 // reducers
 import { rootReducers } from './rootReducers'
-// import { rootReducers2 } from './rootReducers2'
 
 // persist config
 import { persistConfig } from './persistConfig'
+
+// middleware
+import { authMiddleware } from './authMiddleware'
 
 const persistedReducer = persistReducer(persistConfig, rootReducers)
 
@@ -15,7 +17,7 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: false,
-        }),
+        }).concat([authMiddleware]),
 })
 
 export const persistor = persistStore(store)
