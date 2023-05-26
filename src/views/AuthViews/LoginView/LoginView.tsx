@@ -1,11 +1,11 @@
-import { ReactElement, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { ReactElement, useRef, useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { ErrorOutline } from '@mui/icons-material'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/router'
+import { signIn, getProviders, LiteralUnion, ClientSafeProvider } from 'next-auth/react'
 
 // components
-import { Box, Grid, Typography, DefaultInput, DefaultButton, Chip } from '@/components'
+import { Box, Grid, Typography, DefaultInput, DefaultButton, Chip, Divider } from '@/components'
 
 // styles
 import { StyledLoginLink, StyledLoginView } from './loginView-styles'
@@ -13,20 +13,21 @@ import { StyledLoginLink, StyledLoginView } from './loginView-styles'
 // utils
 import { isEmail } from '@/utils'
 
-// actions
-import * as actions from '@/store/auth'
-import { AppDispatch } from '@/store/store'
-
 // selectors
 import { authSelector, useSelector } from '@/selectors'
+
+// models
+import { BuiltInProviderType } from 'next-auth/providers'
 
 export interface FormLogin {
     email: string
     password: string
 }
 
+type Providers = Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null
+
 const LoginView = (): ReactElement => {
-    const dispatch: AppDispatch = useDispatch()
+    const [providers, setProviders] = useState<Providers>(null)
     const router = useRouter()
     const defaultValuesRef = useRef({
         email: '',
@@ -43,24 +44,16 @@ const LoginView = (): ReactElement => {
         defaultValues: defaultValuesRef.current,
     })
 
+    useEffect(() => {
+        getProviders().then((providers) => {
+            setProviders(providers)
+        })
+    }, [])
+
     const finalDestination = (): string => router.query.page?.toString() || '/'
 
-    const onSubmit = ({ email, password }: FormLogin): void => {
-        dispatch(
-            actions.onLogin({
-                email,
-                password,
-                onSuccess: () => {
-                    const destination = finalDestination()
-                    router.push(destination)
-                },
-                onErr: () => {
-                    setTimeout(() => {
-                        dispatch(actions.onReset())
-                    }, 3000)
-                },
-            })
-        )
+    const onSubmit = async ({ email, password }: FormLogin): Promise<void> => {
+        await signIn('credentials', { email, password })
     }
 
     return (
@@ -130,6 +123,25 @@ const LoginView = (): ReactElement => {
                         >
                             ¿No tienes cuenta?
                         </StyledLoginLink>
+                    </Grid>
+
+                    <Grid item xs={12} display="flex" flexDirection="column" justifyContent="end">
+                        <Divider sx={{ width: '100%', mb: 2 }} />
+                        {providers &&
+                            Object.values(providers)
+                                .filter(({ id }) => id !== 'credentials')
+                                .map((provider) => (
+                                    <DefaultButton
+                                        key={provider.id}
+                                        color="primary"
+                                        fullWidth
+                                        sx={{ mb: 1 }}
+                                        variant="outlined"
+                                        onClick={() => signIn(provider.id)}
+                                    >
+                                        {provider.name}
+                                    </DefaultButton>
+                                ))}
                     </Grid>
                 </Grid>
             </Box>

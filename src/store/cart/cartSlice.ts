@@ -6,11 +6,15 @@ import { ICartProduct } from '@/interfaces'
 export interface CartState {
     products: ICartProduct[]
     interestRate: number
+    loading: boolean
+    error: null | string
 }
 
 const initialState: CartState = {
     products: [],
     interestRate: 15,
+    loading: false,
+    error: null,
 }
 
 export const cartSlice = createSlice({

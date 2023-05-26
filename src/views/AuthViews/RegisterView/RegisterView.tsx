@@ -1,5 +1,6 @@
 import { ReactElement, useRef } from 'react'
 import { useRouter } from 'next/router'
+import { signIn } from 'next-auth/react'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { ErrorOutline } from '@mui/icons-material'
@@ -56,8 +57,7 @@ const RegisterView = (): ReactElement => {
                 email,
                 password,
                 onSuccess: () => {
-                    const destination = finalDestination()
-                    router.push(destination)
+                    signIn('credentials', { email, password })
                 },
                 onErr: () => {
                     setTimeout(() => {

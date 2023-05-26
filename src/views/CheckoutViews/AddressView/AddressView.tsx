@@ -69,9 +69,12 @@ const AddressView = (): ReactElement => {
         handleSubmit,
         formState: { errors },
         register,
+        getValues,
+        watch,
     } = useForm<FormAddress>({
         defaultValues: defaultValuesRef.current,
     })
+    watch()
 
     const onSubmit = (data: FormAddress): void => {
         dispatch(authActions.onSetLocation(data))
@@ -172,7 +175,8 @@ const AddressView = (): ReactElement => {
                                 {...register('country', {
                                     required: 'Campo requerido',
                                 })}
-                                defaultValue={setDefaultCountry(countries, location?.country)}
+                                value={getValues('country')}
+                                // defaultValue={setDefaultCountry(countries, location?.country)}
                                 labelId="country"
                                 variant="filled"
                                 label="Pais"

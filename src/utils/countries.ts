@@ -10,6 +10,13 @@ export const setDefaultCountry = (countriesArr: Country[], countryName?: string)
     return countriesArr.find((country) => country.code === countryName)?.code ?? ''
 }
 
+export const findCountryByCode = (countriesArr: Country[], countryCode?: string): string => {
+    if (!countryCode) {
+        return ''
+    }
+    return countriesArr.find((country) => country.code === countryCode)?.name ?? ''
+}
+
 export const countries: Country[] = [
     {
         name: 'Costa Rica',

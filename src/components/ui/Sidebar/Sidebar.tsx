@@ -1,6 +1,7 @@
 import { FC, ReactElement, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { signOut } from 'next-auth/react'
 import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 
@@ -65,6 +66,7 @@ const Sidebar: FC<SidebarProps> = ({ showSidebar }): ReactElement => {
         dispatch(authActions.onReset())
         dispatch(cartActions.onCleanCart())
         Cookies.remove('token')
+        signOut()
         onShowOrHideSidebar()
     }
 
@@ -116,7 +118,12 @@ const Sidebar: FC<SidebarProps> = ({ showSidebar }): ReactElement => {
                                     <ListItemText primary={'Perfil'} />
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    onClick={() => {
+                                        router.push('/orders/history')
+                                        onShowOrHideSidebar()
+                                    }}
+                                >
                                     <ListItemIcon>
                                         <ConfirmationNumberOutlined />
                                     </ListItemIcon>

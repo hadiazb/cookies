@@ -52,6 +52,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, i
         isAuthToken(token, () => {
             dispatch(onValidateToken())
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     interceptors(token)

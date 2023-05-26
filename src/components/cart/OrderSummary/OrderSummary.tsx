@@ -10,7 +10,7 @@ import { Grid, Typography } from '@/components'
 import { ICartProduct } from '@/interfaces'
 
 // utils
-import { format } from '@/utils'
+import { applyInterestRate, format, productsLength, totalPrice } from '@/utils'
 
 export interface OrderSummaryProps {
     products: ICartProduct[]
@@ -18,13 +18,6 @@ export interface OrderSummaryProps {
 }
 
 const OrderSummary: FC<OrderSummaryProps> = ({ products, interestRate }): ReactElement => {
-    const totalPrice = (products: ICartProduct[]): number =>
-        products.reduce((acc, current) => acc + current.quantity * current.price, 0)
-
-    const applyInterestRate = (): number => {
-        return (totalPrice(products) * interestRate) / 100
-    }
-
     return (
         <StyledOrderSummary>
             <Grid container>
@@ -32,7 +25,7 @@ const OrderSummary: FC<OrderSummaryProps> = ({ products, interestRate }): ReactE
                     <Typography fontWeight={500}>No. Productos</Typography>
                 </Grid>
                 <Grid item xs={6} display="flex" justifyContent="end">
-                    <Typography>{products.length} items</Typography>
+                    <Typography>{productsLength(products)} items</Typography>
                 </Grid>
 
                 <Grid item xs={6}>
@@ -46,7 +39,9 @@ const OrderSummary: FC<OrderSummaryProps> = ({ products, interestRate }): ReactE
                     <Typography fontWeight={500}>Impuestos {`(${interestRate}%)`}</Typography>
                 </Grid>
                 <Grid item xs={6} display="flex" justifyContent="end">
-                    <Typography>{`${format(applyInterestRate())}`}</Typography>
+                    <Typography>{`${format(
+                        applyInterestRate(products, interestRate)
+                    )}`}</Typography>
                 </Grid>
 
                 <Grid item xs={6} sx={{ mt: 2 }}>
@@ -54,7 +49,7 @@ const OrderSummary: FC<OrderSummaryProps> = ({ products, interestRate }): ReactE
                 </Grid>
                 <Grid item xs={6} sx={{ mt: 2 }} display="flex" justifyContent="end">
                     <Typography variant="subtitle1">{`${format(
-                        totalPrice(products) + applyInterestRate()
+                        totalPrice(products) + applyInterestRate(products, interestRate)
                     )}`}</Typography>
                 </Grid>
             </Grid>

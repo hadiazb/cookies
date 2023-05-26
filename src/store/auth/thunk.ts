@@ -8,7 +8,7 @@ import { AppDispatch } from '../store'
 import { login, registerUser, validateToken } from '@/apis'
 
 // actions
-import { onLoading, onSetUser, onError, onReset } from '.'
+import { onLoading, onError, onReset } from '.'
 
 export interface FormLogin {
     email: string
@@ -31,7 +31,6 @@ export const onLogin =
         dispatch(onLoading())
         try {
             const { token, user } = await login<LoginResponse>('/user/login', { email, password })
-            dispatch(onSetUser({ token, user }))
             Cookies.set('token', token)
             if (onSuccess) {
                 onSuccess({ token, user })
@@ -71,7 +70,6 @@ export const onRegister =
             })
 
             const { token, user } = await login<LoginResponse>('/user/login', { email, password })
-            dispatch(onSetUser({ token, user }))
             Cookies.set('token', token)
 
             if (onSuccess) {
@@ -94,7 +92,6 @@ export const onValidateToken =
         dispatch(onLoading())
         try {
             const { token, user } = await validateToken<LoginResponse>('/user/validate-token')
-            dispatch(onSetUser({ token, user }))
             Cookies.set('token', token)
             if (params && params.onSuccess) {
                 params.onSuccess({ token, user })

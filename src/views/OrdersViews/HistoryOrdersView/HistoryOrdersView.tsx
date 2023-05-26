@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react'
+import { FC, ReactElement, ReactNode } from 'react'
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid'
 
 // styles
@@ -7,11 +7,14 @@ import { StyledOrderView, StyledOrderLink } from './historyOrdersView-styles'
 // components
 import { Typography, Grid, Chip, DataGrid } from '@/components'
 
+// interfaces
+import { IOrder } from '@/interfaces'
+
 const columns: GridColDef[] = [
     {
         field: 'id',
         headerName: 'ID',
-        width: 100,
+        width: 50,
     },
     {
         field: 'fullname',
@@ -23,7 +26,7 @@ const columns: GridColDef[] = [
         headerName: 'Pagada',
         description: 'Muestra información si está pagada la orden',
         width: 200,
-        renderCell: (params: GridRenderCellParams): ReactNode =>
+        renderCell: (params: GridRenderCellParams<Rows>): ReactNode =>
             params.row.paid ? (
                 <Chip label="Pagada" color="success" variant="outlined" />
             ) : (
@@ -35,48 +38,41 @@ const columns: GridColDef[] = [
         headerName: 'Ver Orden',
         width: 200,
         sortable: false,
-        renderCell: (params: GridRenderCellParams): ReactNode => (
-            <StyledOrderLink passHref key={params.row.id} href={`/orders/${params.row.id}`}>
+        renderCell: (params: GridRenderCellParams<Rows>): ReactNode => (
+            <StyledOrderLink
+                passHref
+                key={params.row.orderId}
+                href={`/orders/${params.row.orderId}`}
+            >
                 Ver Orden
             </StyledOrderLink>
         ),
     },
 ]
 
-const rows = [
-    {
-        id: 1,
-        paid: true,
-        fullname: 'Hugo Andres Diaz',
-    },
-    {
-        id: 2,
-        paid: true,
-        fullname: 'Maria Jose Diaz',
-    },
-    {
-        id: 3,
-        paid: true,
-        fullname: 'Ingrith Aguillon',
-    },
-    {
-        id: 4,
-        paid: true,
-        fullname: 'Jose Rulfo',
-    },
-    {
-        id: 5,
-        paid: false,
-        fullname: 'Marco Tulio Suesca',
-    },
-    {
-        id: 6,
-        paid: true,
-        fullname: 'Jose Barbosa',
-    },
-]
+export interface Rows {
+    id: number
+    paid: boolean
+    fullname: string
+    orderId: string | undefined
+}
 
-const OrderView = (): ReactElement => {
+export interface HistoryViewProps {
+    orders: IOrder[]
+}
+
+const HistoryView: FC<HistoryViewProps> = ({ orders }): ReactElement => {
+    const handleBuildRows = (orders: IOrder[]): Rows[] =>
+        orders.map((order, idx) => ({
+            id: idx + 1,
+            paid: order.isPaid,
+            fullname: handleBuildFullName(order),
+            orderId: order._id,
+        }))
+
+    const handleBuildFullName = (order: IOrder): string =>
+        `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`
+
     return (
         <StyledOrderView>
             <Typography variant="h1" sx={{ mb: 2 }}>
@@ -86,7 +82,7 @@ const OrderView = (): ReactElement => {
             <Grid container spacing={2}>
                 <Grid item xs={12} sx={{ height: 500, width: '100%' }}>
                     <DataGrid
-                        rows={rows}
+                        rows={handleBuildRows(orders)}
                         columns={columns}
                         pageSizeOptions={[5, 10]}
                         rowCount={5}
@@ -97,4 +93,4 @@ const OrderView = (): ReactElement => {
     )
 }
 
-export default OrderView
+export default HistoryView

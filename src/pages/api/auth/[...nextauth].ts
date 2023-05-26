@@ -1,11 +1,12 @@
-import NextAuth from 'next-auth'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import NextAuth, { AuthOptions } from 'next-auth'
 import GithubProvider from 'next-auth/providers/github'
 import Credentials from 'next-auth/providers/credentials'
 
 // db
-import { checkUserEmailPassword } from 'database'
+import { checkUserEmailPassword, oAUthToDbUser } from 'database'
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
     providers: [
         Credentials({
             name: 'Custom Login',
@@ -22,8 +23,6 @@ export const authOptions = {
                 },
             },
             async authorize(credentials): Promise<any> {
-                console.log({ credentials })
-
                 if (!credentials) {
                     return null
                 }
@@ -37,17 +36,27 @@ export const authOptions = {
             clientSecret: process.env.GITHUB_SECRET || '',
         }),
     ],
-    callbacks: {
-        async jwt({ token, account, user }: any) {
-            console.log({ token, account, user })
 
+    pages: {
+        signIn: '/auth/login',
+        newUser: '/auth/register',
+    },
+
+    session: {
+        maxAge: 2592000,
+        strategy: 'jwt',
+        updateAge: 86400,
+    },
+
+    callbacks: {
+        async jwt({ token, account, user }) {
             if (account) {
                 token.accessToken = account.access_token
                 switch (account.type) {
                     case 'oauth':
-                        //
+                        token.user = await oAUthToDbUser(user.email || '', user.name || '')
                         break
-                    case 'credential':
+                    case 'credentials':
                         token.user = user
                         break
                 }
@@ -55,8 +64,9 @@ export const authOptions = {
 
             return token
         },
-        async session({ session, token, user }: any) {
-            console.log({ session, token, user })
+        async session({ session, token }: any) {
+            session.accessToken = token.accessToken
+            session.user = token.user
             return session
         },
     },
